@@ -1,5 +1,7 @@
 <?php
 
+namespace SamPHP\Core;
+
 /**
  * SamPHP Framework — Session Management
  *
@@ -20,6 +22,15 @@ class Session
     public static function start()
     {
         if (session_status() === PHP_SESSION_NONE) {
+            // Enforce secure session cookies
+            session_set_cookie_params([
+                'lifetime' => 0,
+                'path' => '/',
+                'domain' => $_SERVER['HTTP_HOST'] ?? '',
+                'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', // True if on HTTPS
+                'httponly' => true, // Prevents JavaScript from reading the session cookie
+                'samesite' => 'Lax' // Provides CSRF protection
+            ]);
             session_start();
         }
     }

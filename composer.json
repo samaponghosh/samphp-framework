@@ -31,6 +31,12 @@
         "ext-pdo": "*",
         "ext-mbstring": "*"
     },
+    "autoload": {
+        "psr-4": {
+            "SamPHP\\Core\\": "app/core/",
+            "App\\": "app/"
+        }
+    },
     "require-dev": {},
     "minimum-stability": "stable",
     "prefer-stable": true,

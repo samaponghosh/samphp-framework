@@ -1,5 +1,7 @@
 <?php
 
+namespace SamPHP\Core;
+
 /**
  * SamPHP Framework — Front Controller & URL Router
  *
@@ -12,6 +14,7 @@
 class App
 {
     protected $controller = 'HomeController';
+    protected $controllerInstance;
     protected $method = 'index';
     protected $params = [];
 
@@ -21,20 +24,20 @@ class App
 
         if (isset($url[0])) {
             $controllerName = ucfirst($url[0]) . 'Controller';
-            $controllerFile = APPROOT . '/controllers/' . $controllerName . '.php';
-
-            if (file_exists($controllerFile)) {
+            if (class_exists("App\\Controllers\\" . $controllerName)) {
                 $this->controller = $controllerName;
                 unset($url[0]);
             }
         }
 
-        $controllerFile = APPROOT . '/controllers/' . $this->controller . '.php';
-        require_once $controllerFile;
-        $this->controller = new $this->controller;
+        $controllerClass = "App\\Controllers\\" . $this->controller;
+        if (!class_exists($controllerClass)) {
+            die('Controller not found: ' . htmlspecialchars($controllerClass));
+        }
+        $this->controllerInstance = new $controllerClass();
 
         if (isset($url[1])) {
-            if (method_exists($this->controller, $url[1])) {
+            if (method_exists($this->controllerInstance, $url[1])) {
                 $this->method = $url[1];
                 unset($url[1]);
             }
@@ -42,7 +45,7 @@ class App
 
         $this->params = $url ? array_values($url) : [];
 
-        call_user_func_array([$this->controller, $this->method], $this->params);
+        call_user_func_array([$this->controllerInstance, $this->method], $this->params);
     }
 
     public function parseUrl()

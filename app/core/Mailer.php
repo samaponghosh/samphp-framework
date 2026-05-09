@@ -1,5 +1,7 @@
 <?php
 
+namespace SamPHP\Core;
+
 /**
  * SamPHP Framework — Mailer
  *

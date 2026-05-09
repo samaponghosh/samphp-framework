@@ -1,5 +1,7 @@
 <?php
 
+namespace SamPHP\Core;
+
 /**
  * SamPHP Framework — Database Connection
  *
@@ -19,24 +21,27 @@ class Database
      * Get a PDO database connection.
      * Uses singleton pattern to reuse connections.
      *
-     * @return PDO
+     * @return \PDO
      */
     public static function connect()
     {
         if (self::$instance === null) {
             try {
-                self::$instance = new PDO(
+                self::$instance = new \PDO(
                     'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
                     DB_USER,
                     DB_PASS
                 );
 
-                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-                self::$instance->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-            } catch (PDOException $e) {
+                self::$instance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                self::$instance->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+                self::$instance->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+            } catch (\PDOException $e) {
+                // Log the actual error internally
+                error_log('[' . date('Y-m-d H:i:s') . '] DB Error: ' . $e->getMessage() . PHP_EOL, 3, LOG_PATH . 'error.log');
+                
                 http_response_code(500);
-                die('Database connection failed: ' . $e->getMessage());
+                die('A database connection error occurred. Please try again later.');
             }
         }
 

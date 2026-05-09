@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Middleware;
+
+use SamPHP\Core\Session;
+
 /**
  * SamPHP Framework — Role Middleware
  *

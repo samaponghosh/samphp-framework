@@ -1,5 +1,7 @@
 <?php
 
+namespace SamPHP\Core;
+
 /**
  * SamPHP Framework — Base Controller
  *
@@ -18,8 +20,11 @@ class Controller
      */
     public function model($model)
     {
-        require_once APPROOT . '/models/' . $model . '.php';
-        return new $model();
+        $modelClass = "App\\Models\\" . $model;
+        if (class_exists($modelClass)) {
+            return new $modelClass();
+        }
+        die('Model not found: ' . htmlspecialchars($modelClass));
     }
 
     /**
