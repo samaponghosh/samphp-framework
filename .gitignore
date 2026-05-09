@@ -1,0 +1,9 @@
+/config/config.php
+/storage/logs/*
+!/storage/logs/.keep
+/storage/cache/*
+!/storage/cache/.keep
+/public/uploads/*
+!/public/uploads/.keep
+/.env
+/vendor/

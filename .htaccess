@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# Redirect empty requests to public/
+RewriteRule ^$ public/ [L]
+
+# Redirect all other requests to public/ (except if they already start with public/)
+RewriteCond %{REQUEST_URI} !^/accounts_crm/public/
+RewriteRule ^(.*)$ public/$1 [L]
+
+Options -Indexes
+
+<FilesMatch "\.(env|log|sql|json|lock)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
