@@ -10,7 +10,7 @@
     
     <!-- Dynamic Page Scripts -->
     <?php if(isset($page_js)): ?>
-        <script src="/assets/js/<?php echo $page_js; ?>.js"></script>
+        <script src="<?php echo BASE_URL; ?>/assets/js/<?php echo $page_js; ?>.js"></script>
     <?php endif; ?>
 </body>
 </html>

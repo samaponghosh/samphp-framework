@@ -1,9 +1,28 @@
-/config/config.php
-/storage/logs/*
-!/storage/logs/.keep
-/storage/cache/*
-!/storage/cache/.keep
-/public/uploads/*
-!/public/uploads/.keep
+# === Environment & Credentials ===
 /.env
+/config/config.php
+
+# === Dependencies ===
 /vendor/
+composer.lock
+
+# === Storage (runtime data) ===
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/mail_attachments/*
+!/storage/mail_attachments/.gitkeep
+
+# === Uploads ===
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# === IDE & OS ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db

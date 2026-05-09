@@ -2,6 +2,15 @@
 
 require_once "../app/core/Session.php";
 
+/**
+ * RoleMiddleware — Restricts access based on user roles.
+ *
+ * Usage in a controller:
+ *   RoleMiddleware::handle(['admin', 'editor']);
+ *
+ * Customize the $roles array in getRoleName() to match your application's
+ * role IDs from the database.
+ */
 class RoleMiddleware
 {
     public static function handle($allowedRoles = [])
@@ -35,12 +44,19 @@ class RoleMiddleware
         }
     }
 
+    /**
+     * Map role IDs to role names.
+     * Customize this method to match your database role structure.
+     *
+     * @param int $roleId
+     * @return string|null
+     */
     public static function getRoleName($roleId)
     {
         $roles = [
-            1 => 'SuperAdmin',
-            2 => 'CA',
-            3 => 'Accountant'
+            1 => 'admin',
+            2 => 'editor',
+            3 => 'user'
         ];
 
         return $roles[$roleId] ?? null;

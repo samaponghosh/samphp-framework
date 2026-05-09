@@ -1,16 +1,39 @@
 {
     "name": "samphp/framework",
-    "description": "SamPHP: A secure, MVC-based PHP framework.",
+    "description": "SamPHP — A lightweight, secure, MVC-based PHP framework for building CRMs, websites, and APIs with zero bloat.",
     "type": "project",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "mvc",
+        "framework",
+        "crm",
+        "api",
+        "security",
+        "lightweight"
+    ],
+    "homepage": "https://github.com/samaponghosh/samphp-framework",
+    "authors": [
+        {
+            "name": "Samapon Ghosh",
+            "homepage": "https://github.com/samaponghosh",
+            "role": "Creator"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/samaponghosh/samphp-framework/issues",
+        "source": "https://github.com/samaponghosh/samphp-framework"
+    },
     "require": {
         "php": ">=7.4"
     },
+    "minimum-stability": "stable",
     "scripts": {
-        "post-root-package-install": [
-            "@php -r \"file_exists('config/config.php') || copy('config/config.sample.php', 'config/config.php');\""
-        ],
         "post-create-project-cmd": [
             "@php -r \"file_exists('config/config.php') || copy('config/config.sample.php', 'config/config.php');\""
         ]
+    },
+    "config": {
+        "sort-packages": true
     }
 }

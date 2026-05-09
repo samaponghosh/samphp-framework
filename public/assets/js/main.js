@@ -1,6 +1,15 @@
+/**
+ * SamPHP Framework — Core JavaScript Utilities
+ *
+ * Provides: Toast notifications, Modal system, AJAX helpers,
+ *           Form handling, Date/Currency formatting, UI helpers.
+ */
+
 const BASE_URL = document.querySelector('meta[name="base-url"]')?.content || '';
 
-// Toast notification system
+// =============================================
+// Toast Notification System
+// =============================================
 function showToast(message, type = 'success') {
     const existing = document.querySelector('.toast');
     if (existing) existing.remove();
@@ -15,7 +24,9 @@ function showToast(message, type = 'success') {
     setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3500);
 }
 
-// Modal system
+// =============================================
+// Modal System
+// =============================================
 function openModal(id) {
     const modal = document.getElementById(id);
     if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
@@ -25,7 +36,9 @@ function closeModal(id) {
     if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
 }
 
-// AJAX helper
+// =============================================
+// AJAX Helper
+// =============================================
 async function apiRequest(url, method = 'GET', data = null) {
     const options = {
         method,
@@ -53,7 +66,9 @@ async function apiRequest(url, method = 'GET', data = null) {
     }
 }
 
-// Form submit helper
+// =============================================
+// Form Submit Helper
+// =============================================
 function handleFormSubmit(formId, url, successCallback) {
     const form = document.getElementById(formId);
     if (!form) return;
@@ -77,7 +92,9 @@ function handleFormSubmit(formId, url, successCallback) {
     });
 }
 
-// Delete confirmation
+// =============================================
+// Delete Confirmation Helper
+// =============================================
 async function confirmDelete(url, itemName, callback) {
     if (confirm(`Are you sure you want to delete "${itemName}"? This action cannot be undone.`)) {
         const result = await apiRequest(url, 'POST');
@@ -90,19 +107,29 @@ async function confirmDelete(url, itemName, callback) {
     }
 }
 
-// Format currency
-function formatCurrency(amount) {
-    return '₹' + parseFloat(amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+// =============================================
+// Formatting Utilities
+// =============================================
+
+/**
+ * Format a number as currency.
+ * Override the locale and currency symbol for your region.
+ */
+function formatCurrency(amount, locale = 'en-US', currency = 'USD') {
+    return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: currency,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(parseFloat(amount));
 }
 
-// Format date
 function formatDate(dateStr) {
     if (!dateStr) return '-';
     const d = new Date(dateStr);
-    return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-// Time ago
 function timeAgo(dateStr) {
     const now = new Date();
     const d = new Date(dateStr);
@@ -113,7 +140,9 @@ function timeAgo(dateStr) {
     return Math.floor(diff / 86400) + 'd ago';
 }
 
-// Init on DOM ready
+// =============================================
+// DOM Ready — Core Initialization
+// =============================================
 document.addEventListener('DOMContentLoaded', () => {
     // Sidebar Toggle
     const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -144,15 +173,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Lucide Icons
     if (window.lucide) lucide.createIcons();
-
-    // Notification badge check
-    checkNotifications();
 });
-
-async function checkNotifications() {
-    const result = await apiRequest(BASE_URL + '/notification/unreadCount');
-    if (result?.status === 'success' && result.count > 0) {
-        const badge = document.getElementById('notif-badge');
-        if (badge) badge.style.display = 'block';
-    }
-}
