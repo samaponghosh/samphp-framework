@@ -1,6 +1,17 @@
 <?php
 
-require_once "../app/core/Session.php";
+/**
+ * SamPHP Framework — Role Middleware
+ *
+ * Restricts access based on user roles.
+ * Handles both regular HTTP and AJAX requests gracefully.
+ *
+ * Usage in a controller:
+ *   RoleMiddleware::handle(['admin', 'editor']);
+ *
+ * Customize the $roles array in getRoleName() to match your
+ * application's role IDs from the database.
+ */
 
 /**
  * RoleMiddleware — Restricts access based on user roles.
@@ -13,12 +24,17 @@ require_once "../app/core/Session.php";
  */
 class RoleMiddleware
 {
+    /**
+     * Check if the current user has one of the allowed roles.
+     *
+     * @param array $allowedRoles Array of role name strings
+     */
     public static function handle($allowedRoles = [])
     {
         $user = Session::get('user');
 
         if (!$user) {
-            header("Location: " . BASE_URL . "/auth/login");
+            header('Location: ' . BASE_URL . '/auth/login');
             exit;
         }
 
@@ -39,7 +55,7 @@ class RoleMiddleware
                 exit;
             }
 
-            header("Location: " . BASE_URL . "/dashboard");
+            header('Location: ' . BASE_URL . '/dashboard');
             exit;
         }
     }

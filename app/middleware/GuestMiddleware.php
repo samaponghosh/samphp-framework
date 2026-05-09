@@ -1,6 +1,14 @@
 <?php
 
-require_once "../app/core/Session.php";
+/**
+ * SamPHP Framework — Guest Middleware
+ *
+ * Redirects authenticated users away from guest-only pages
+ * (e.g., login, register).
+ *
+ * Usage in a controller:
+ *   GuestMiddleware::handle();
+ */
 
 class GuestMiddleware
 {
@@ -9,7 +17,7 @@ class GuestMiddleware
         Session::start();
 
         if (Session::has('user')) {
-            header("Location: " . BASE_URL . "/dashboard/index");
+            header('Location: ' . BASE_URL . '/dashboard/index');
             exit;
         }
     }

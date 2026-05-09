@@ -10,7 +10,9 @@
         "crm",
         "api",
         "security",
-        "lightweight"
+        "lightweight",
+        "template",
+        "boilerplate"
     ],
     "homepage": "https://github.com/samaponghosh/samphp-framework",
     "authors": [
@@ -25,12 +27,17 @@
         "source": "https://github.com/samaponghosh/samphp-framework"
     },
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "ext-pdo": "*",
+        "ext-mbstring": "*"
     },
+    "require-dev": {},
     "minimum-stability": "stable",
+    "prefer-stable": true,
     "scripts": {
         "post-create-project-cmd": [
-            "@php -r \"file_exists('config/config.php') || copy('config/config.sample.php', 'config/config.php');\""
+            "@php -r \"file_exists('config/config.php') || copy('config/config.sample.php', 'config/config.php');\"",
+            "@php -r \"echo PHP_EOL . '\\033[32m✔ SamPHP Framework installed successfully!\\033[0m' . PHP_EOL . 'Next steps:' . PHP_EOL . '  1. Edit config/config.php with your database settings' . PHP_EOL . '  2. Point your web server to the public/ directory' . PHP_EOL . '  3. Visit your project URL' . PHP_EOL . PHP_EOL;\""
         ]
     },
     "config": {

@@ -1,6 +1,14 @@
 <?php
 
-require_once "../app/core/Session.php";
+/**
+ * SamPHP Framework — Auth Middleware
+ *
+ * Ensures the user is authenticated before accessing a route.
+ * Handles both regular HTTP and AJAX requests gracefully.
+ *
+ * Usage in a controller:
+ *   AuthMiddleware::handle();
+ */
 
 class AuthMiddleware
 {
@@ -21,7 +29,7 @@ class AuthMiddleware
                 exit;
             }
 
-            header("Location: " . BASE_URL . "/auth/login");
+            header('Location: ' . BASE_URL . '/auth/login');
             exit;
         }
     }

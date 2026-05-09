@@ -16,10 +16,10 @@
 
 - **MVC Architecture** — Clean separation of Models, Views, and Controllers
 - **Built-in Security** — CSRF protection, XSS sanitization, bcrypt password hashing
-- **Session Management** — Secure session handling with regeneration support
+- **Session Management** — Secure session handling with regeneration & flash messages
 - **Middleware System** — Auth, Guest, and Role-based access control out of the box
-- **Input Validation** — Server-side validation helpers (required, email, min, max, numeric)
-- **PDO Database Layer** — Secure MySQL connection with prepared statements
+- **Input Validation** — Server-side validation (required, email, min, max, numeric, url, regex)
+- **PDO Database Layer** — Secure MySQL connection with singleton pattern & prepared statements
 - **Modern Frontend** — Outfit font, Lucide icons, toast notifications, modal system
 - **AJAX Utilities** — Built-in JavaScript helpers for API calls and form handling
 - **Clean URLs** — Apache mod_rewrite routing with directory protection
@@ -32,6 +32,11 @@
 ```bash
 composer create-project samphp/framework your-project-name
 ```
+
+This will:
+1. Download the framework template
+2. Auto-create `config/config.php` from the sample
+3. Display next-step instructions
 
 ### Manual Installation
 
@@ -46,13 +51,22 @@ cp config/config.sample.php config/config.php
 Edit `config/config.php` with your settings:
 
 ```php
+// Application
 define('APP_NAME', 'My Application');
 define('BASE_URL', 'http://localhost/your-project-name/public');
 
+// Database
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'your_database');
 define('DB_USER', 'root');
 define('DB_PASS', '');
+
+// Timezone
+date_default_timezone_set('UTC');
+
+// Error Reporting — Set to 0 in production!
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 ```
 
 ## 📂 Project Structure
@@ -65,12 +79,12 @@ your-project-name/
 │   ├── core/               # Framework core (do not modify)
 │   │   ├── App.php         # Front controller & URL router
 │   │   ├── Controller.php  # Base controller class
-│   │   ├── Database.php    # PDO database connection
+│   │   ├── Database.php    # PDO database connection (singleton)
 │   │   ├── Mailer.php      # Email helper (extendable)
 │   │   ├── Model.php       # Base model class
 │   │   ├── Router.php      # Route definitions (extendable)
 │   │   ├── Security.php    # CSRF, XSS, password hashing
-│   │   ├── Session.php     # Session management
+│   │   ├── Session.php     # Session management + flash messages
 │   │   └── Validator.php   # Input validation
 │   ├── middleware/          # Request middleware
 │   │   ├── AuthMiddleware.php
@@ -87,7 +101,7 @@ your-project-name/
 │           └── sidebar.php
 ├── config/
 │   ├── config.sample.php   # Template config (committed)
-│   ├── constants.php       # Path constants
+│   ├── constants.php       # Path constants (auto-resolved)
 │   └── database.php        # Database bootstrap
 ├── public/                 # Web root (point your server here)
 │   ├── assets/
@@ -198,6 +212,19 @@ class DashboardController extends Controller
 }
 ```
 
+### 5. Flash Messages
+
+```php
+// In a controller — set a flash message
+Session::flash('success', 'Product created successfully!');
+$this->redirect('/product');
+
+// In a view — display it
+<?php if ($msg = Session::getFlash('success')): ?>
+    <div class="alert alert-success"><?= htmlspecialchars($msg); ?></div>
+<?php endif; ?>
+```
+
 ## 🔒 Security Features
 
 | Feature | Usage |
@@ -207,6 +234,7 @@ class DashboardController extends Controller
 | Password Hashing | `Security::hashPassword($pw)` / `Security::verifyPassword($pw, $hash)` |
 | Session Security | `Session::regenerate()` after login |
 | Directory Protection | `.htaccess` blocks access to sensitive files |
+| Prepared Statements | PDO with emulated prepares disabled |
 
 ## 🌐 URL Routing
 
@@ -225,14 +253,21 @@ URLs map automatically to controllers and methods:
 - MySQL 5.7+ / MariaDB 10.3+
 - Apache with `mod_rewrite` enabled
 - PDO PHP extension
+- mbstring PHP extension
 
 ## 🤝 Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+## 🔐 Security
+
+If you discover a security vulnerability, please see [SECURITY.md](SECURITY.md) for responsible disclosure guidelines.
 
 ## 📄 License
 

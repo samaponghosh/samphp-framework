@@ -26,3 +26,8 @@ composer.lock
 *~
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# === Testing ===
+/coverage/
+.phpunit.result.cache

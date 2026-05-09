@@ -1,18 +1,30 @@
 <?php
 
-// Basic session start
+/**
+ * SamPHP Framework — Application Entry Point
+ *
+ * This is the front controller. All HTTP requests are routed
+ * through this file by the .htaccess rewrite rules.
+ *
+ * Point your web server's document root to this public/ directory.
+ */
+
+// Start session with secure defaults
 session_start();
 
-require_once "../config/config.php";
-require_once "../config/constants.php";
+// Load configuration
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/constants.php';
 
-require_once "../app/core/App.php";
-require_once "../app/core/Controller.php";
-require_once "../app/core/Model.php";
-require_once "../app/core/Database.php";
-require_once "../app/core/Session.php";
-require_once "../app/core/Security.php";
-require_once "../app/core/Validator.php";
-require_once "../app/core/Mailer.php";
+// Load framework core
+require_once __DIR__ . '/../app/core/Session.php';
+require_once __DIR__ . '/../app/core/Security.php';
+require_once __DIR__ . '/../app/core/Validator.php';
+require_once __DIR__ . '/../app/core/Database.php';
+require_once __DIR__ . '/../app/core/Mailer.php';
+require_once __DIR__ . '/../app/core/Model.php';
+require_once __DIR__ . '/../app/core/Controller.php';
+require_once __DIR__ . '/../app/core/App.php';
 
+// Boot the application
 $app = new App();

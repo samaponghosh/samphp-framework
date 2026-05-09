@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * SamPHP Framework — Front Controller & URL Router
+ *
+ * Parses the URL and routes requests to the appropriate
+ * controller, method, and parameters.
+ *
+ * URL pattern: /controller/method/param1/param2
+ */
+
 class App
 {
     protected $controller = 'HomeController';
@@ -12,14 +21,16 @@ class App
 
         if (isset($url[0])) {
             $controllerName = ucfirst($url[0]) . 'Controller';
+            $controllerFile = APPROOT . '/controllers/' . $controllerName . '.php';
 
-            if (file_exists("../app/controllers/" . $controllerName . ".php")) {
+            if (file_exists($controllerFile)) {
                 $this->controller = $controllerName;
                 unset($url[0]);
             }
         }
 
-        require_once "../app/controllers/" . $this->controller . ".php";
+        $controllerFile = APPROOT . '/controllers/' . $this->controller . '.php';
+        require_once $controllerFile;
         $this->controller = new $this->controller;
 
         if (isset($url[1])) {
